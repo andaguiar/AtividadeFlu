@@ -1,3 +1,4 @@
+import 'package:aula1/perguntas.dart';
 import 'package:flutter/material.dart';
 
 main() {
@@ -11,12 +12,12 @@ class ComponenteInicial extends StatefulWidget {
 
 class _ComponenteInicialState extends State<ComponenteInicial> {
   var contador = 0;
-
+  var cont = 0; 
   final perguntas = [
-    "Quantos anos vc tem?",
+    "Qual sua cor favorita?",
     "Onde você mora?",
     "Você tem internet em sua casa?",
-    "Você gosta de sua casa?"
+
   ];
 
   void clicou() {
@@ -27,45 +28,35 @@ class _ComponenteInicialState extends State<ComponenteInicial> {
     print(contador);
   }
 
+  void criar() {
+    setState(() {
+      cont++;
+      botoes.add(ElevatedButton(onPressed: clicou, child: Text("Botão $cont")))
+    });
+    print(contador);
+  }
+
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
         home: Scaffold(
             appBar: AppBar(
-              title: Text("Perguntas e respostas!"),
+              title: Text("Jogo das perguntas!"),
             ),
             
     body: Column(
       children: [
-                Text(perguntas[contador]),
-                ElevatedButton(
-                onPressed: clicou,
-                child: Text("Clique aqui"),
-                ),
-
-                ElevatedButton(
-                onPressed: () {
-                print("Outra função");
-                  },
-                  child: Text("Clique aqui anonimamente"),
-                ),
-
-                ElevatedButton(
-                  onPressed: () => print("Função arrow"),
-                  child: Text("Meu botao"),
-                ),
+                Perguntas(perguntas[contador]),
+                ElevatedButton(onPressed: clicou, child: Text("azul")),
+                ElevatedButton(onPressed: null, child: Text("vermelho")),
+                ElevatedButton(onPressed: null, child: Text("laranja")),
+                ElevatedButton(onPressed: null, child: Text("roxo")),
+                TextField(decoration: InputDecoration(labelText: 'Digite sua resposta')),
+                ElevatedButton(onPressed: clicou, child: Text("roxo")),
                 
-                 ElevatedButton(
-                  onPressed: null,
-                  child: Text("Nulo"),
-                ),
-
-     Column(children: <Widget>[
-                  Text('Aprendendo'),
-                  Text('Programação'),
-                  Text('Flutter'),
-                ]),
-              ],
-            )));
+    
+    ]       
+             
+                 )));
+          
   }
 }
