@@ -1,92 +1,60 @@
-import 'package:aula/criar.dart';
 import 'package:flutter/material.dart';
+import './questionario.dart';
 
 void main() {
-  runApp(ComponenteInicial());
+  runApp(AulaComponentes());
 }
 
-class ComponenteInicial extends StatefulWidget {
+class AulaComponentes extends StatefulWidget {
   @override
-  State<ComponenteInicial> createState() => _ComponenteInicialState();
+  State<AulaComponentes> createState() => _AulaComponentesState();
 }
 
-class _ComponenteInicialState extends State<ComponenteInicial> {
-  var contador = 0;
-  var cont = 0;
-  List<Widget> botoes = [];
+class _AulaComponentesState extends State<AulaComponentes> {
+  var perguntaAtual = 0;
+  var cor = Colors.white;
 
-  final perguntas = [
-    "signo?",
-    "cor?",
-    "idade?",
-    "sexualidade?",
+  final List<Map<String, Object>> perguntas = [
+    {
+      "texto": "Qual é a sua comida favorita?",
+      "respostas": ["Pizza", "Hambúrguer", "Sushi", "Massa"]
+    },
+    {
+      "texto": "Qual é o seu filme favorito?",
+      "respostas": ["O Poderoso Chefão", "Interestelar", "Titanic", "A Origem"]
+    },
+    {
+      "texto": "Qual é o seu esporte favorito?",
+      "respostas": ["Futebol", "Basquete", "Tênis", "Natação"]
+    },
   ];
 
-  void eventobotao() {
-    setState(() {
-      contador++;
-    });
-    print(contador);
+  bool get temPergunta {
+    return perguntaAtual < perguntas.length;
   }
 
-  void criarbt() {
-    if (cont < 5) {
-      setState(() {
-        cont++;
-        botoes.add(
-          ElevatedButton(
-            onPressed: eventobotao,
-            child: Text("Botão $cont"),
-          ),
-        );
-      });
-    }
+  void acao() {
+    setState(() {
+      perguntaAtual++;
+    });
+    print(perguntaAtual);
   }
 
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Perguntas e respostas!"),
+          title: temPergunta
+              ? Text(perguntas[perguntaAtual]["texto"].toString())
+              : Text("Terminou"),
         ),
-        body: Column(
-          children: [
-            Column(
-              children: [
-                perguntas(perguntas[contador]),
-                ElevatedButton(
-                  onPressed: eventobotao,
-                  child: Text("amarelo"),
-                ),
-                ElevatedButton(
-                  onPressed: eventobotao,
-                  child: Text("roxo"),
-                ),
-                ElevatedButton(
-                  onPressed: eventobotao,
-                  child: Text("laranja"),
-                ),
-                ElevatedButton(
-                  onPressed: eventobotao,
-                  child: Text("azul"),
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Digite sua resposta',
-                    errorText:
-                        contador == 0 ? 'Este campo é obrigatório' : null,
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: criarbt,
-                  child: Text("Criar botão"),
-                ),
-              ],
-            ),
-            Column(children: botoes),
-          ],
-        ),
+        body: temPergunta
+            ? Questionario(
+                perguntas: perguntas,
+                perguntaAtual: perguntaAtual,
+                onRespostaSelecionada: () => acao(),
+              )
+            : Text("Resultado"),
       ),
     );
   }
