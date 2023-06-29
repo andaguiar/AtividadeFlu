@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './questionario.dart';
+import './inicio.dart';
 
 void main() {
   runApp(AulaComponentes());
@@ -13,6 +14,7 @@ class AulaComponentes extends StatefulWidget {
 class _AulaComponentesState extends State<AulaComponentes> {
   var perguntaAtual = 0;
   var cor = Colors.white;
+  var exibirQuestionario = false;
 
   final List<Map<String, Object>> perguntas = [
     {
@@ -29,8 +31,10 @@ class _AulaComponentesState extends State<AulaComponentes> {
     },
   ];
 
-  bool get temPergunta {
-    return perguntaAtual < perguntas.length;
+  void iniciarQuestionario() {
+    setState(() {
+      exibirQuestionario = true;
+    });
   }
 
   void acao() {
@@ -44,17 +48,17 @@ class _AulaComponentesState extends State<AulaComponentes> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: temPergunta
+          title: exibirQuestionario
               ? Text(perguntas[perguntaAtual]["texto"].toString())
-              : Text("Terminou"),
+              : Text('Bem-vindo!'),
         ),
-        body: temPergunta
+        body: exibirQuestionario
             ? Questionario(
                 perguntas: perguntas,
                 perguntaAtual: perguntaAtual,
-                onRespostaSelecionada: () => acao(),
+                onRespostaSelecionada: acao,
               )
-            : Text("Resultado"),
+            : Inicio(iniciarQuestionario),
       ),
     );
   }
